@@ -1,2 +1,357 @@
-hola Dr. Kato
-AEA
+%$latex
+%Apuntes de control 1
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[total={18cm,24cm},centering]{geometry} %define tamaño para imprimir hoja
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+\usepackage{color}
+\usepackage[europeanresistors, americaninductors]{circuitikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+
+
+\usetikzlibrary{patterns,angles,quotes}
+
+\ctikzset{bipoles/thickness=1} %grosor elementos pasivos dos polos
+%\ctikzset{bipoles/length=1.2cm} %longitud de elementos pasivos dos polos
+%\tikzstyle{every node}=[font\normalsize] %Tamaño de las etiquetas
+\tikzstyle{every path}=[line width=1pt, line cap=round, line join=round] %Caracteristicas linea union
+
+
+\title{Apuntes de clase}
+\author{Lima Soto Ariel Wilson}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+\section{Modelos matemáticos de sistemas.}
+
+\subsection{Modelo matemático de un circuito RC.}
+
+Obtener la ecuación diferencial del siguiente sistema RC:
+
+\begin{circuitikz}[american]
+
+    %\draw (0,0) to [sV=$v_{i}(t)$] ++(0,3);
+    \draw (0,3) to [R=$R$] (3,3);
+    \draw (3,3) to [short, -*] (4.5,3); %nodo positivo
+    \draw (3,3) to [C=$C$] (3,0);
+    \draw (3,0) to [short, -*] (4.5,0);
+    \draw (4.5,3) to [open, v=$v_{0}(t)$] (4.5,0); %nodo negativo
+    \draw (3,0) to [short] (0,0)
+          (0,0) to [sV, l=$v_{i}(t)$] (0,3);
+    
+    %\draw (2,1.5) arc [
+    %   start angle=0,
+    %    end angle=180,
+    %    x radius=1cm,
+    %    y radius=0.5cm
+    %];
+
+\end{circuitikz}
+
+Aplicamos la ley de Kirchhoff de las mallas:
+
+$$v_{i}(t) = v_{R}(t) + v_{C}(t)$$
+
+Donde:
+$$\frac{\mathrm{d}q(t)}{\mathrm{d}t} = C \frac{v(t)}{\mathrm{d}t} =  i(t)$$
+$$v_{C}(t) = v_{0}(t) = \frac{1}{C}\int i_{C}(t) \mathrm{d}t$$
+
+$$v_{R}(t) = Ri(t)$$
+
+Ecuación diferencial del sistema:
+
+$$v_{i}(t) = Ri(t) + \frac{1}{C}\int i_{C}(t) \mathrm{d}t$$
+
+\subsection{Modelo matemático de un circuito RL.}
+
+\begin{circuitikz}[american]
+
+    %\draw (0,0) to [sV=$v_{i}(t)$] ++(0,3);
+    \draw (0,3) to [R=$R$] (3,3);
+    \draw (3,3) to [short, -*] (4.5,3); %nodo positivo
+    \draw (3,3) to [L=$L$] (3,0);
+    \draw (3,0) to [short, -*] (4.5,0);
+    \draw (4.5,3) to [open, v=$v_{0}(t)$] (4.5,0); %nodo negativo
+    \draw (3,0) to [short] (0,0)
+          (0,0) to [sV, l=$v_{i}(t)$] (0,3);
+
+\end{circuitikz}
+
+Aplicamos la ley de Kirchhoff de las mallas:
+
+$$v_{i}(t) = v_{R}(t) + v_{L}(t)$$
+
+Donde:
+$$v_{L}(t) = v_{0}(t) = L\frac{\mathrm{d}i(t)}{\mathrm{d}t}$$
+
+$$v_{R}(t) = Ri(t)$$
+
+Ecuación diferencial del circuito RL:
+
+$$v_{i}(t) = Ri(t) + L\frac{\mathrm{d}i(t)}{\mathrm{d}t}$$
+
+\subsection{Modelo matemático de un circuito RLC.}
+
+\begin{circuitikz}[american]
+
+    %\draw (0,0) to [sV=$v_{i}(t)$] ++(0,3);
+    \draw (0,3) to [R=$R$] (3,3);
+    \draw (3,3) to [L, l=$L$] (6,3);
+    \draw (6,3) to [short, -*] (7.5,3); %nodo positivo
+    \draw (6,3) to [C, l=$C$] (6,0);
+    \draw (6,0) to [short, -*] (7.5,0); %nodo negativo
+    \draw (7.5,3) to [open, v=$v_{0}(t)$] (7.5,0);
+    \draw (6,0) to [short] (0,0)
+          (0,0) to [sV, l=$v_{i}(t)$] (0,3);
+
+\end{circuitikz}
+
+Aplicamos la ley de Kirchhoff de las mallas:
+
+$$v_{i}(t) = v_{R}(t) + v_{L}(t) + v_{C}(t)$$
+
+Donde:
+$$v_{C}(t) = \frac{1}{C}\int i_{C}(t) \mathrm{d}t$$
+$$v_{L}(t) = L\frac{\mathrm{d}i(t)}{\mathrm{d}t}$$
+$$v_{R}(t) = Ri(t)$$
+
+Ecuación diferencial del circuito RLC:
+
+$$v_{i}(t) = Ri(t) + L\frac{\mathrm{d}i(t)}{\mathrm{d}t} + \frac{1}{C}\int i_{C}(t) \mathrm{d}t$$
+
+\subsection{Aproximaci\'on lineal.}
+
+La linealidad.
+$$y = mx + y_{0}$$
+
+Como la ecuación de una recta, $g(x)$ se observa que no es lineal. 
+
+Aqui es donde aproximamos con la formula de Taylor:
+
+$$g(x) = g(x_0) + \frac{dg(x)}{dx}_{x=x_{0}} \frac{x-x_{0}}{1!} + \frac{d^{2}g(x)}{dx^{2}}_{x=x_{0}} \frac{(x-x_{0})^{2}}{2!} + \frac{d^{3}g(x)}{dx^{3}}_{x=x_{0}} \frac{(x-x_{0})^{3}}{3!}+...+\frac{d^{n}g(x)}{dx^{n}}_{x=x_{0}} \frac{(x-x_{0})^{n}}{n!}+...$$
+
+Donde $x_{0}$ e $y_{0}$ son los puntos donde trabajara el sistema, aproximamos en ese entorno para eso solo usamos los dos primeros t\'erminos.
+
+$$g(x) \cong g(x) = g(x_0) + \frac{dg(x)}{dx}_{x=x_{0}} \frac{x-x_{0}}{1!}$$
+
+Si.
+
+$$g(x_{0})=y_{0} \hspace{0.5cm} \therefore \hspace{0.5cm} \frac{dg(x)}{dx}_{x=x_{0}}=m$$
+
+$$g(x) \cong m(x-x_{0}) + y_{0} \hspace{0.5cm} \therefore \hspace{0.5cm} g(x) - y_{0} = mx + mx_{0} Si g(x)=y \hspace{0.5cm} \therefore \hspace{0.5cm} mx_{0}=cte=x'_{0}$$
+
+\vspace{0.5cm}
+Tenemos la ecuación de la recta:
+
+$$y-y_{0} = mx + x'_{0}$$
+
+Esta ecuación es una aproximaci\'on, ser\'a en un entorno que consideremos aceptable.
+
+\vspace{1cm}
+
+\begin{circuitikz}
+    
+    % ceiling
+    \fill[pattern=north east lines] (2,0) rectangle (8,.25);
+    \draw (2,0) -- (8,0);
+    
+    
+    % pendulum
+    \draw (5,0) coordinate (pivot) -- +(-45:5) coordinate (bob);
+    \fill[gray] (bob) circle (0.3);
+    \draw (bob) circle (0.3);
+    \draw[dashed] (bob) -- +(90:3);
+    \draw[thick,->] (bob) -- +(-90:2) coordinate(mg);
+    \node at (8.5,-6) {$mg$};
+    
+    % previous position
+    \draw[dashed] (pivot) -- (5,-4.7);
+    \draw[dashed] (5,-5) coordinate (center) circle (0.3);
+    
+    % angle
+    \pic[draw, ->, "$\theta$", angle eccentricity=1.2, angle radius=1cm] {angle=center--pivot--bob};
+
+      
+    \end{circuitikz}
+
+\newpage
+
+\section{Funcion de transferencia.}
+
+
+Circuito RC que tenemos en la ecuación diferencial:
+
+Ecuación de malla.
+
+    $$v_{i}(t) = v_{r}(t) + v_{c}(t)$$
+    $$v_{i}(t) \rightarrow \text{Variable de entrada.}$$
+    $$v_{0}(t) \rightarrow \text{Variable de salida.}$$
+    $$v_{0}(t)=v_{c}(t)$$
+
+    $$v_{R}(t)=Ri(t) \therefore v_{c}(t)=\frac{1}{C}\int i_{C}(t) \mathrm{d}t$$
+
+Ecuación diferencial del sistema es: 
+
+$$v_{i}(t)=Ri(t)+\frac{1}{C}\int i_{C}(t) \mathrm{d}t$$
+
+Aplicamos transformada de Laplace a la ecuación 2.
+
+
+$$\mathscr{L} \left \{ v_{i}(t) \right \} =\mathscr{L} \left \{ Ri(t)+\frac{1}{C}\int i_{C}(t) \mathrm{d}t \right \}$$
+
+La transformada es distributivo respecto del producto y la suma.
+
+
+$$\mathscr{L} \left \{ v_{i}(t) \right \} =\mathscr{L} \left \{ Ri(t) \right \} + \mathscr{L} \left \{ \frac{1}{C}\int i_{C}(t) \mathrm{d} \right \} \hspace{0.5cm} \therefore \hspace{0.5cm} \mathscr{L} \left \{ v_{i}(t) \right \} = R \mathscr{L} \left \{ i(t) \right \} + \frac{1}{C} \mathscr{L} \left \{ \int i_{C}(t) \mathrm{d}t \right \}$$
+
+
+
+$$ V_{i}(s) = R[I(s)-i(0)] + \frac{1}{C} \left[ \frac{I(s)}{s} + \left( \frac{ \int i_{0}(t) \mathrm{d}t }{s} \right) \right] \hspace{0.5cm} \therefore \hspace{0.5cm} i(0) = 0$$
+
+$$RI(s) + \frac{1}{C}\frac{1}{s}I(s) = V_{i}(s)  \rightarrow  I(s)\left[R + \frac{1}{Cs} \right]=V_{i}(s) \rightarrow I(s) = V_{i}(s)\left[ \frac{1}{R + \frac{1}{Cs}}\right]$$
+
+$$I(s) = V_{i}(s) \left[\frac{Cs}{RCs + 1} \right]$$
+
+
+La Funcion de transferencia se define por:  $\left[ \dfrac{variable de salida}{variable de entrada}\right] = FT = \dfrac{V_{0}(s)}{V_{i}(s)}$
+
+
+$$ v_{0}(t) \rightarrow  \text{Variable de la salida} \therefore v_{0}(t)=v_{c}(t) $$
+
+
+$$v_{c}(t) = \frac{1}{C}\int i_{C}(t) \mathrm{d}t \rightarrow \quad\text{aplicamos Laplace}\quad  V_{c}(s)=V_{0}(s)=\frac{1}{Cs}I(s) $$
+
+
+$$V_{0}(s)=\frac{1}{Cs} \left[ V_{i}(s) \left[ \frac{Cs}{RCs + 1} \right] \right] \rightarrow V_{0}(s)=V_{i}(s) \left[ \frac{1}{RCs+1} \right] \rightarrow \frac{V_{0}(s)}{V_{i}(s)}=\frac{1}{RCs + 1}$$
+
+La funsion transferencia es: 
+
+\begin{equation*}
+    \tcboxmath[colback=red!25,colframe=red]{\frac{V_{0}(s)}{V_{i}(s)} = \frac{1}{RCs + 1}}
+\end{equation*}
+
+
+\newpage
+\subsection{Funcion de transferencia de un sistema masa resorte.\\}
+
+%\begin{circuitikz}
+%    %ground
+%    \pattern[pattern=north east lines] (0,0) rectangle (7,.25);
+%    \draw[thick] (0,.25)--(7,.25);
+%
+%    \draw (3,.25) to[spring, l=$k$] (3,2); %resorte
+%    \draw (4,.25) to[damper, l=$\beta$] (4,2); %amortiguador
+%    \draw[fill=gray!40] (2.5,2) rectangle (4.5,3); %rectangulo
+%    \node at (3.5,2.5) {$m$};
+%
+%    \draw[thick,->] (3.5,4) -- (3.5,3);
+%    \node at (3.75,3.75) {$F$};
+%
+%
+%\end{circuitikz}
+
+\vspace{1cm}
+%\centering
+\begin{circuitikz}
+    %ground
+    \pattern[pattern=north east lines] (0,5) rectangle (8,5.25);
+    \draw[thick] (0,5)--(8,5);
+
+    \draw (2,5) to[spring, l=$\mathbf{k}$] (2,2); %resorte
+    \draw (6,5) to[damper, l_=$\mathbf{\beta}$] (6,2); %amortiguador
+    \draw[fill=gray!40] (1,1) rectangle (7,2); %rectangulo
+    \node at (4,1.5) {$m$};
+
+    \draw[thick,->] (4,3.5) -- (4,2);
+    \node at (4,3.75) {$\mathbf{r(t)}$};
+
+    \draw[thick,->] (7.5,1) -- (7.5,3);
+    \draw[thick] (7.2,2) -- (8,2);
+    \node at (7.5,3.3) {$y(t)$};
+
+    %Diagrama de fuerzas
+    \draw[thick] (10,4) -- (14,4);
+    \draw[thick,->] (12,6) -- (12,4);
+    \draw[thick,->] (10.5,2) -- (10.5,4);
+    \draw[thick,->] (12,2) -- (12,4);
+    \draw[thick,->] (13.5,2) -- (13.5,4);
+    \node at (12,6.2) {$\mathbf{r(t)}$};
+    \node at (10.5,1.8) {$\mathbf{F_{m}(t)}$};
+    \node at (12,1.8) {$\mathbf{F_{\beta}(t)}$};
+    \node at (13.5,1.8) {$\mathbf{F_{k}(t)}$};
+
+
+\end{circuitikz}
+
+
+        $$\mathbf{r(t)} \quad\text{Perturbaci\'on o entrada.}$$
+
+        $$\mathbf{F_{k}(t)}  \quad\text{Fuerza del resorte.}$$
+
+        $$\mathbf{F_{\beta}(t)} \quad\text{Fuerza del amortiguador.}$$
+
+        $$\mathbf{F_{m}(t)} \quad\text{Fuerza de masa.}$$
+
+        $$\mathbf{Fy(t)} \quad\text{Movimiento de la masa o salida.}$$
+
+
+$$\sum{F_{i}=0} \quad\rightarrow\quad F_{m}(t)+F_{\beta}(t)+F_{k}(t)=r(t)$$
+
+Vamos a obtener cada una de las fuerzas: 
+
+$$F_{k}(t)=ky(t) \quad\therefore\quad F_{\beta}(t)=\beta v_{y}(t)=\beta \frac{dy(t)}{dt} \quad\therefore\quad F_{m}(t)=ma_{y}(t)=m\frac{d^{2}y(t)}{dt^{2}}$$
+
+Remplazamos en la Ec.1
+%Aqui arreglar las ecuaciones************kato
+\begin{equation}[Ec.2]
+    m\frac{d^{2}y(t)}{dt^{2}} + \beta\frac{dy(t)}{dt} + ky(t) = r(t)
+\end{equation}
+
+Ecuación diferencial del sistema.
+
+A la ecuación Ec.2 aplicamos la transformada de Laplace.
+
+
+$$\mathscr{L} \left\{ m\frac{d^{2}y(t)}{dt^{2}} + \beta\frac{dy(t)}{dt} + ky(t) \right\} = \mathscr{L}\{r(t)\} \rightarrow 
+    m \mathscr{L} \left\{ \frac{d^{2}y(t)}{dt^{2}} \right\} + \beta \mathscr{L} \left\{ \frac{dy(t)}{dt} \right\} + k \mathscr{L} \{ y(t) \} = \mathscr{L}\{r(t)\}$$
+
+$$m\left\{ s^{2}Y(s) -sy(0) -\frac{dy(0)}{dt} \right\} + \beta[sY()-y(0)] + kY(s) = R(s)  \quad\Longrightarrow\quad  y(0)=\frac{dy(0)}{dt}=0$$
+
+$$ms^{2}Y(s) + \beta sY(s) + kY(s) = R(s) \quad\rightarrow\quad [m s^{2} + \beta s + k] Y(s) = R(s) $$
+
+$$\text{Funci\'on de transferencia} \quad\rightarrow\quad FT(s)=\frac{\text{Variable de salida: } Y(s)}{\text{Variable de entrada: } R(s)}$$
+
+
+Funci\'on de transferencia de un sistema masa resorte.
+
+
+\begin{equation*}
+    \tcboxmath[colback=red!25,colframe=red]{ FT(s) \frac{Y(s)}{R(s)} = \frac{1}    {ms^{2} \beta s + k}}
+\end{equation*}
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+\end{document}
+
