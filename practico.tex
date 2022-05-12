@@ -1,0 +1,665 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[total={20cm,24cm},centering]{geometry} %define tamaño para imprimir hoja
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+\usepackage{color}
+\usepackage[europeanresistors, americaninductors]{circuitikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+
+
+\usetikzlibrary{patterns,angles,quotes}
+
+\ctikzset{bipoles/thickness=1} %grosor elementos pasivos dos polos
+%\ctikzset{bipoles/length=1.2cm} %longitud de elementos pasivos dos polos
+%\tikzstyle{every node}=[font\normalsize] %Tamaño de las etiquetas
+\tikzstyle{every path}=[line width=1pt, line cap=round, line join=round] %Caracteristicas linea union
+
+
+%\title{Apuntes de clase}
+%\author{Lima Soto Ariel Wilson}
+%\date{\today}
+
+
+
+\begin{document}
+
+
+\section{Ejercicio \# 1}
+
+Hallar las ecuaci\'ones de funci\'on de transferencia: \(\displaystyle FT_{1}(s)=\frac{X(s)}{R(s)}\) \hspace{5mm} y \hspace{5mm} \(\displaystyle FT_{2}(s)=\frac{Y(s)}{R(s)}\).
+
+  %Diagrama masa, resorte y amortiguamiento
+  \begin{circuitikz}
+    %ground
+    \fill[pattern=north east lines] (0,5.5) rectangle (6,5.75);
+    \draw[thick] (0,5.5)--(6,5.5);
+
+    \draw (1,5.5) to[spring, l=$\mathbf{k2}$] (1,2); %resorte
+    \draw (5,5.5) to[damper, l_=$\mathbf{\beta}$] (5,2); %amortiguador
+    \draw[fill=gray!40] (0,1) rectangle (6,2); %rectangulo
+    \node at (3,1.5) {$m_{2}$}; %nodo masa
+
+    \draw[thick,->,>=latex] (3,3.5) -- (3,2); %flecha
+    \node at (3,3.75) {$\mathbf{r(t)}$};
+
+    \draw (3,1) to[spring, l=$\mathbf{k1}$] (3,-2); %resorte
+    \draw[fill=gray!40] (0,-2) rectangle (6,-3); %rectangulo
+    \node at (3,-2.5) {$m_{1}$}; %nodo masa
+
+    \draw[thick,->] (7.5,1) -- (7.5,3);
+    \draw[thick] (7.2,2) -- (8,2);
+    \node at (7.5,3.3) {$x(t)$}; %nodo x
+
+    \draw[thick,->] (7.5,-3) -- (7.5,-1);
+    \draw[thick] (7.2,-2) -- (8,-2);
+    \node at (7.5,-0.7) {$y(t)$}; %nodo y
+
+    %Diagrama de fuerzas para m2
+    \draw[thick] (10,3) -- (16,3);
+    \draw[thick,->,>=latex] (13,5) -- (13,3); %flecha r(t)
+    \draw[thick,->,>=latex] (10.5,1) -- (10.5,3); %flecha Fm(t)
+    \draw[thick,->,>=latex] (12,1) -- (12,3); %flecha FB(t)
+    \draw[thick,->,>=latex] (14,1) -- (14,3); %flecha Fk1(t)
+    \draw[thick,->,>=latex] (15.5,1) -- (15.5,3); %flecha Fk2(t)
+    \node at (13.5,5) {$\mathbf{r(t)}$};
+    \node at (10.5,0.9) {$\mathbf{F_{m_{2}}(t)}$};
+    \node at (12,0.9) {$\mathbf{F_{\beta}(t)}$};
+    \node at (14,0.9) {$\mathbf{F_{k_{1}}(t)}$};
+    \node at (15.5,0.9) {$\mathbf{F_{k_{2}}(t)}$};
+
+    %Diagrama de fuerzas para m1
+    \draw[thick] (10,-2) -- (14,-2);
+    \draw[thick,->,>=latex] (12,-4) -- (12,-2); %flecha Fm1(t)
+    \draw[thick,->,>=latex] (12,0) -- (12,-2); %flecha Fk1(t)
+    \node at (12,-4) {$\mathbf{F_{m_{1}}(t)}$};
+    \node at (12.8,-0.4) {$\mathbf{F_{k_{1}}(t)}$};
+
+
+\end{circuitikz}
+
+Solucion:
+\begin{enumerate}
+  \item Tenemos las siguientes ecuaciones:
+
+    \(\displaystyle F_{m_{1}}=m_{1}\frac{d^{2}y(t)}{dt^{2}}\) ; 
+    \(\displaystyle F_{m_{2}}=m_{2}\frac{d^{2}x(t)}{dt^{2}}\) ; 
+    \(\displaystyle F_{\beta}=\beta\frac{dx(t)}{dt}\) ; 
+    \(\displaystyle F_{k_{1}}=k_{1}[x(t)-y(t)]\) ; 
+    \(\displaystyle F_{k_{2}}=k_{2}x(t)\).
+
+  \item Hacemos la sumatoria de las fuerzas (DCL):
+
+    Para la masa 2.
+    \begin{eqnarray*}
+      F_{k_{1}} + F_{k_{2}} + F_{\beta} + F_{m_{2}} = r(t) \\ [3mm]
+      [x(t)-y(t)]k_{1} + x(t)k_{2} + \beta\frac{dx(t)}{dt} + m_{2}\frac{d^{2}x(t)}{dt^{2}} = r(t) \\[3mm]
+    \end{eqnarray*}
+    Para la masa 1.
+    \begin{eqnarray*}
+      -F_{k_{1}} + F_{m_{1}} = 0 \\ [2mm]
+      -[x(t)-y(t)]k_{1} + m_{1}\frac{d^{2}y(t)}{dt^{2}} = 0 \\[2mm]
+      [y(t)-x(t)]k_{1} + m_{1}\frac{d^{2}y(t)}{dt^{2}} = 0 \\[2mm]
+    \end{eqnarray*}
+
+  \item Aplicamos la transformada de Laplace: \(\displaystyle y'(0)=y(0)=x'(0)=x(0)=0\)
+
+    Para la primera ecuaci\'on:
+    \begin{eqnarray*}
+      [x(t)-y(t)]k_{1} + x(t)k_{2} + \beta\frac{dx(t)}{dt} + m_{2}\frac{d^{2}x(t)}{dt^{2}} &=& r(t) \\[3mm]
+      \mathscr{L} \left \{[x(t)-y(t)]k_{1} + x(t)k_{2} + \beta\frac{dx(t)}{dt} + m_{2}\frac{d^{2}x(t)}{dt^{2}} \right \} &=& \mathscr{L}\{r(t)\} \\[3mm]
+      [X(s)-Y(s)]k_{1} + X(s)k_{2} + S\beta X(s) + m_{2}S^{2}X(s) &=& R(t) \\[3mm]
+    \end{eqnarray*}
+    Para la segunda ecuaci\'on:
+    \begin{eqnarray*}
+      [y(t)-x(t)]k_{1} + m_{1}\frac{d^{2}y(t)}{dt^{2}} = 0 \\[2mm]
+      \mathscr{L}\left\{[y(t)-x(t)]k_{1} + m_{1}\frac{d^{2}y(t)}{dt^{2}}\right\} = 0 \\[2mm]
+      [Y(s)-X(s)]k_{1} + m_{1}S^{2}Y(s) = 0 \\[2mm]
+    \end{eqnarray*}
+
+  \item Ordenamos las ecuaciones:
+    \begin{eqnarray}
+      \overbrace{(k_{1} + k_{2} S\beta + m_{2}S^{2})}^{\textcolor{blue}{a}}X(s) - \overbrace{k_{1}}^{\textcolor{blue}{b}}Y(s) = R(s) \\[3mm]
+      \overbrace{-k_{1}}^{\textcolor{blue}{c}}X(s) + \overbrace{(k_{1} + m_{1}S^{2})}^{\textcolor{blue}{d}}Y(s) = 0
+    \end{eqnarray}
+
+  \item Resolvemos las ecuaciones por el metodo de cramer:
+    \begin{eqnarray*}
+      X(s)=\frac{
+      \begin{vmatrix}
+        R(s) & b\\
+        0 & d
+      \end{vmatrix}}
+      {\begin{vmatrix}
+        a & b\\
+        c & d
+      \end{vmatrix}}
+      =\frac{R(s)\cdot d - 0\cdot b}{a\cdot d - c\cdot b}=\frac{R(s)d}{ad - cb}
+      =\frac{(k_{1}+m_{1}S^{2})R(s)}{(k_{1}+k_{2}S\beta+m_{2}S^{2})(k_{1}+m_{1}S^{2}) - k_{1}(k_{1})}
+    \end{eqnarray*}
+    \begin{eqnarray*}
+      \tcboxmath[colback=blue!25,colframe=black]
+      {FT_{1}(s)=\frac{X(s)}{R(s)}=\frac{k_{1}+m_{1}S^{2}}{(k_{1}+k_{2}S\beta+m_{2}S^{2})(k_{1}+m_{1}S^{2}) - k_{1}^{2}}}
+    \end{eqnarray*}
+
+    \begin{eqnarray*}
+      Y(s)=\frac{
+      \begin{vmatrix}
+        a & R(s)\\
+        c & 0
+      \end{vmatrix}}
+      {\begin{vmatrix}
+        a & b\\
+        c & d
+      \end{vmatrix}}
+      =\frac{a\cdot0 - c\cdot R(s)}{a\cdot d - c\cdot b}=\frac{-cR(s)}{ad - cb}
+      =\frac{k_{1}R(s)}{(k_{1}+k_{2}S\beta+m_{2}S^{2})(k_{1}+m_{1}S^{2}) - k_{1}(k_{1})}
+    \end{eqnarray*}
+    \begin{eqnarray*}
+      \tcboxmath[colback=blue!25,colframe=black]
+      {FT_{2}(s)=\frac{Y(s)}{R(s)}=\frac{k_{1}}{(k_{1}+k_{2}S\beta+m_{2}S^{2})(k_{1}+m_{1}S^{2}) - k_{1}^{2}}}
+    \end{eqnarray*}
+
+\end{enumerate}
+
+\section{Ejercicio \# 2}
+\setcounter{equation}{0}
+
+Hallar las ecuaci\'ones de funci\'on de transferencia: \(\displaystyle FT_{1}(s)=\frac{X(s)}{R(s)}\) \hspace{5mm} y \hspace{5mm} \(\displaystyle FT_{2}(s)=\frac{Y(s)}{R(s)}\).
+
+  %Diagrama masa, resorte y amortiguamiento
+  \begin{circuitikz}
+    %ground
+
+    \draw[fill=gray!40] (0,2) rectangle (6,3); %rectangulo
+    \node at (3,2.5) {$m_{2}$}; %nodo masa
+
+    \draw (1,2) to[spring, l=$\mathbf{k_{2}}$] (1,-1); %resorte
+    \draw (5,2) to[damper, l_=$\mathbf{\beta}$] (5,-1); %amortiguador
+    \draw[fill=gray!40] (0,-2) rectangle (6,-1); %rectangulo
+    \node at (3,-1.5) {$m_{1}$}; %nodo masa
+
+    \draw (3,-2) to[spring, l=$\mathbf{k_{1}}$] (3,-5); %resorte 
+    
+    \draw[thick,->,>=latex] (3,-7) -- (3,-5); %flecha
+    \node at (3.5,-6) {$\mathbf{r(t)}$}; %perturbacion
+
+
+    \draw[thick,->] (7.5,1) -- (7.5,3);
+    \draw[thick] (7.2,2) -- (8,2);
+    \node at (7.5,3.3) {$z(t)$}; %nodo z(t)
+
+    \draw[thick,->] (7.5,-3) -- (7.5,-1);
+    \draw[thick] (7.2,-2) -- (8,-2);
+    \node at (7.5,-0.7) {$y(t)$}; %nodo y(t)
+
+    \draw[thick,->] (7.5,-6) -- (7.5,-4);
+    \draw[thick] (7.2,-5) -- (8,-5);
+    \node at (7.5,-3.7) {$x(t)$}; %nodo x(t)
+
+    %Diagrama de fuerzas para m2
+    \draw[thick] (10,2.5) -- (14,2.5);
+    \draw[thick,->,>=latex] (12,4) -- (12,2.5); %flecha m2
+    \draw[thick,->,>=latex] (10.5,1) -- (10.5,2.5); %flecha Fk2(t)
+    \draw[thick,->,>=latex] (13.5,1) -- (13.5,2.5); %flecha FB(t)
+    \node at (12.5,4) {$\mathbf{F_{m_{2}}}$};
+    \node at (10.5,0.9) {$\mathbf{F_{k_{2}}(t)}$};
+    \node at (13.5,0.9) {$\mathbf{F_{\beta}(t)}$};
+
+    %Diagrama de fuerzas para m1
+    \draw[thick] (10,-2) -- (14,-2);
+    \draw[thick,->,>=latex] (10.5,-0.5) -- (10.5,-2); %flecha Fk2(t)
+    \draw[thick,->,>=latex] (12,-3.5) -- (12,-2); %flecha Fk1(t)
+    \draw[thick,->,>=latex] (13.5,-0.5) -- (13.5,-2); %flecha FB(t)
+    \draw[thick,->,>=latex] (12,-0.5) -- (12,-2); %flecha Fk1(t)
+    \node at (10.5,-0.4) {$\mathbf{F_{k_{2}}(t)}$};
+    \node at (12,-0.4) {$\mathbf{F_{m_{1}}(t)}$};
+    \node at (13,-3.4) {$\mathbf{F_{k_{1}}(t)}$};
+    \node at (13.5,-0.4) {$\mathbf{F_{\beta}(t)}$};
+
+    %Diagrama de fuerzas para x(t)
+    \draw[thick] (10,-6) -- (14,-6);
+    \draw[thick,->,>=latex] (12,-7.5) -- (12,-6); %flecha r(t)
+    \draw[thick,->,>=latex] (12,-4.5) -- (12,-6); %flecha Fk1(t)
+    \node at (12.5,-7.5) {$\mathbf{r(t)}$};
+    \node at (11.4,-4.5) {$\mathbf{F_{k_{1}}(t)}$};
+
+\end{circuitikz}
+
+Solucion:
+\begin{enumerate}
+  \item Tenemos las siguientes ecuaciones:
+
+    \(\displaystyle F_{m_{1}}=m_{1}\frac{d^{2}y(t)}{dt^{2}}\) ; 
+    \(\displaystyle F_{m_{2}}=m_{2}\frac{d^{2}z(t)}{dt^{2}}\) ;\\
+
+    \(\displaystyle F_{k_{1}}=k_{1}[x(t)-y(t)]\) visto desde $x(t)$; \vspace{5mm}
+    \(\displaystyle F_{k_{2}}=k_{2}[y(t)-z(t)]\) visto desde $y(t)$;\\
+
+    \(\displaystyle F_{\beta}=\beta\left[\frac{dy(t)}{dt}-\frac{dz(t)}{dt}\right]\) visto desde $y(t)$;\\
+
+  \item Hacemos la sumatoria de las fuerzas (DCL):
+
+    Para el punto donde se encuentra la perturbaci\'on:
+    \begin{eqnarray*}
+      & -[x(t)-y(t)]k_{1}+r(t)=0\\
+      & [x(t)-y(t)]k_{1}=r(t)
+    \end{eqnarray*}
+    Para la masa 1.
+    \begin{eqnarray*}
+      F_{k_{1}} - F_{k_{2}} - F_{\beta} - F_{m_{1}} = 0 \\ [3mm]
+      [x(t)-y(t)]k_{1} - [y(t)-z(t)]k_{2} - \beta\left[\frac{dy(t)}{dt}-\frac{dz(t)}{dt}\right] - m_{1}\frac{d^{2}y(t)}{dt^{2}} = 0 \\[3mm]
+    \end{eqnarray*}
+    Para la masa 2.
+    \begin{eqnarray*}
+      F_{k_{2}} + F_{\beta} - F_{m_{2}} = 0 \\ [2mm]
+      [y(t)-z(t)]k_{2} + \beta\left[\frac{dy(t)}{dt}-\frac{dz(t)}{dt} \right] - m_{2}\frac{d^{2}z(t)}{dt^{2}} = 0 \\[2mm]
+    \end{eqnarray*}
+
+  \item Aplicamos la transformada de Laplace: \(\displaystyle z'(0)=z(0)=y'(0)=y(0)=x'(0)=x(0)=0\)
+
+    Para la primera ecuaci\'on:
+    \begin{eqnarray*}
+      & [x(t)-y(t)]k_{1}=r(t)\\ [2mm]
+      & \mathscr{L}\{[x(t)-y(t)]k_{1}\}=\mathscr{L}\{r(t)\}\\ [2mm]
+      & [X(s)-Y(s)]k_{1}=R(s)
+    \end{eqnarray*}
+    Para la segunda ecuaci\'on:
+    \begin{eqnarray*}
+      [x(t)-y(t)]k_{1} - [y(t)-z(t)]k_{2} - \beta\left[\frac{dy(t)}{dt}-\frac{dz(t)}{dt}\right] - m_{1}\frac{d^{2}y(t)}{dt^{2}} = 0 \\[3mm]
+      \mathscr{L}\left\{[x(t)-y(t)]k_{1} - [y(t)-z(t)]k_{2} - \beta\left[\frac{dy(t)}{dt}-\frac{z(t)}{dt}\right] - m_{1}\frac{d^{2}y(t)}{dt^{2}}\right\} = 0 \\[3mm]
+      [X(s)-Y(s)]k_{1} - [Y(s)-Z(s)]k_{2} - \beta S[Y(s)-Z(s)] - m_{1}S^{2}Y(s) = 0 \\[3mm]
+    \end{eqnarray*}
+    Para la tercera ecuaci\'on:
+    \begin{eqnarray*}
+      [y(t)-z(t)]k_{2} + \beta\left[\frac{dy(t)}{dt}-\frac{dz(t)}{dt} \right] - m_{2}\frac{d^{2}z(t)}{dt^{2}} = 0 \\[2mm]
+      \mathscr{L}\left\{[y(t)-z(t)]k_{2} + \beta\left[\frac{dy(t)}{dt}-\frac{dz(t)}{dt} \right] - m_{2}\frac{d^{2}z(t)}{dt^{2}}\right\} = 0 \\[2mm]
+      [Y(s)-Z(s)]k_{2} + \beta S[Y(s)-Z(s)] - m_{2}S^{2}Z(s) = 0 \\[2mm]
+    \end{eqnarray*}
+
+  \item Ordenamos las ecuaciones:
+    \begin{eqnarray}
+      &&\overbrace{k_{1}}^{a}X(s) - \overbrace{k_{1}}^{b}Y(s) + \overbrace{0}^{c}Z(s) = R(s)\\
+      &&\overbrace{k_{1}}^{d}X(s) - \overbrace{(k_{1}+k_{2}+\beta S + m_{2}S^{2})}^{e}Y(s) + \overbrace{(k_{2}+\beta S)}^{f}Z(s) = 0\\
+      &&\overbrace{0}^{g}X(s) + \overbrace{(k_{2} + \beta S)}^{h}Y(s) - \overbrace{(\beta S + m_{2}S^{2})}^{i}Z(s) = 0
+    \end{eqnarray}
+
+  \item Resolvemos las ecuaciones por el metodo de cramer:
+    \begin{eqnarray*}
+      X(s)=\frac{
+      \begin{vmatrix}
+        R(s) & -b & c\\
+        0 & -e & f\\
+        0 & h & -i
+      \end{vmatrix}}
+      {\begin{vmatrix}
+        a & -b & c\\
+        d & -e & f\\
+        g & h & -i
+      \end{vmatrix}}
+      =\frac{R(s)ei-bf0+0hc-[-0ec+0bi+hfR(s)]}{aei-\cancel{bfg}+\cancel{dhc}-[-\cancel{gec}+dbi+hfa]}=\frac{(ei-hf)R(s)}{aei-dbi-hfa}\\
+      X(s)=\frac{(k_{1}+k_{2}+\beta S+m_{2}S^{2})(\beta S+m_{2}S^{2})R(s)}{k_{1}(k_{1}+k_{2}+\beta S +m_{2}S^{2})(\beta S +m_{2}S^{2})-k_{1}^{2}(\beta S + m_{2}S^{2})-(k_{2}+\beta S)(k_{2}+\beta S)k_{1}}
+    \end{eqnarray*}
+    \begin{eqnarray*}
+      \tcboxmath[colback=blue!25,colframe=black]
+      {FT_{1}(s)=\frac{X(s)}{R(s)}=\frac{(k_{1}+k_{2}+\beta S+m_{2}S^{2})(\beta S+m_{2}S^{2})}{k_{1}(k_{1}+k_{2}+\beta S +m_{2}S^{2})(\beta S +m_{2}S^{2})-k_{1}^{2}(\beta S + m_{2}S^{2})-(k_{2}+\beta S)(k_{2}+\beta S)k_{1}}}
+    \end{eqnarray*}
+
+    \begin{eqnarray*}
+      Y(s)&=&\frac{
+      \begin{vmatrix}
+        a & R(s) & 0\\
+        d & 0 & f\\
+        0 & 0 & -i
+      \end{vmatrix}}
+      {\begin{vmatrix}
+        a & -b & 0\\
+        d & -e & f\\
+        0 & h & -i
+      \end{vmatrix}}
+      =\frac{dR(s)i}{aei-dbi-hfa}\\
+      Y(s)&=&\frac{K_{1}(\beta S + m_{2}S^{2})R(s)}{k_{1}(k_{1}+k_{2}+\beta S +m_{2}S^{2})(\beta S +m_{2}S^{2})-k_{1}^{2}(\beta S + m_{2}S^{2})-(k_{2}+\beta S)(k_{2}+\beta S)k_{1}}\\
+    \end{eqnarray*}
+    \begin{eqnarray*}
+      \tcboxmath[colback=blue!25,colframe=black]
+      {FT_{2}(s)=\frac{Y(s)}{R(s)}=
+      \frac{K_{1}(\beta S + m_{2}S^{2})}{k_{1}(k_{1}+k_{2}+\beta S +m_{2}S^{2})(\beta S +m_{2}S^{2})-k_{1}^{2}(\beta S + m_{2}S^{2})-(k_{2}+\beta S)(k_{2}+\beta S)k_{1}}}\\
+    \end{eqnarray*}
+
+\end{enumerate}
+
+\newpage
+
+\section{Ejercicio \# 3}
+\setcounter{equation}{0}
+
+Hallar las ecuaci\'ones de funci\'on de transferencia: \(\displaystyle FT_{1}(s)=\frac{X(s)}{R(s)}\) \hspace{5mm} y \hspace{5mm} \(\displaystyle FT_{2}(s)=\frac{Y(s)}{R(s)}\).
+
+  %Diagrama masa, resorte y amortiguamiento
+  \begin{circuitikz}
+
+    \draw[thick,->,>=latex] (3,5) -- (3,3); %flecha
+    \node at (3.5,3.5) {$\mathbf{r(t)}$}; %perturbacion
+
+    \draw[fill=gray!40] (0,2) rectangle (6,3); %rectangulo
+    \node at (3,2.5) {$m_{1}$}; %nodo masa
+
+    \draw (1,2) to[spring, l=$\mathbf{k_{1}}$] (1,-1); %resorte
+    \draw (5,2) to[damper, l_=$\mathbf{\beta}$] (5,-1); %amortiguador
+    \draw[fill=gray!40] (0,-2) rectangle (6,-1); %rectangulo
+    \node at (3,-1.5) {$m_{2}$}; %nodo masa
+
+    \draw (3,-2) to[spring, l=$\mathbf{k_{2}}$] (3,-5); %resorte 
+    
+     %ground
+    \fill[pattern=north east lines] (0,-5) rectangle (6,-5.25);
+    \draw[thick] (0,-5)--(6,-5);
+
+
+
+    \draw[thick,->] (7.5,3) -- (7.5,1);
+    \draw[thick] (7,2) -- (8,2);
+    \node at (7.5,0.7) {$y(t)$}; %nodo z(t)
+
+    \draw[thick,->] (7.5,-1) -- (7.5,-3);
+    \draw[thick] (7,-2) -- (8,-2);
+    \node at (7.5,-3.3) {$x(t)$}; %nodo y(t)
+
+    \node at (6.3,-5) {$0$}; %nodo cero(t)
+
+    %Diagrama de fuerzas para m1
+    \draw[thick] (10,2.5) -- (14,2.5);
+    \draw[thick,->,>=latex] (12,4) -- (12,2.5); %flecha m2
+    \draw[thick,->,>=latex] (10.5,1) -- (10.5,2.5); %flecha Fk2(t)
+    \draw[thick,->,>=latex] (12,1) -- (12,2.5); %flecha Fk1(t)
+    \draw[thick,->,>=latex] (13.5,1) -- (13.5,2.5); %flecha FB(t)
+    \node at (12.5,4) {$\mathbf{r(t)}$};
+    \node at (10.5,0.8) {$\mathbf{F_{k_{1}}(t)}$};
+    \node at (12,0.8) {$\mathbf{F_{m_{1}}(t)}$};
+    \node at (13.8,0.8) {$\mathbf{F_{\beta}(t)}$};
+
+    %Diagrama de fuerzas para m2
+    \draw[thick] (10,-2) -- (14,-2);
+    \draw[thick,->,>=latex] (10.5,-0.5) -- (10.5,-2); %flecha Fk1(t)
+    \draw[thick,->,>=latex] (13.5,-0.5) -- (13.5,-2); %flecha FB(t)
+    \draw[thick,->,>=latex] (11.5,-3.5) -- (11.5,-2); %flecha m2(t)
+    \draw[thick,->,>=latex] (12.5,-3.5) -- (12.5,-2); %flecha Fk2(t)
+    \node at (10.5,-0.4) {$\mathbf{F_{k_{1}}(t)}$};
+    \node at (13.5,-0.4) {$\mathbf{F_{\beta}(t)}$};
+    \node at (11,-3.6) {$\mathbf{F_{m_{2}}(t)}$};
+    \node at (13.2,-3.6) {$\mathbf{F_{k_{2}}(t)}$};
+
+    %Diagrama de fuerzas para 0(cero)
+    \draw[thick] (10,-6) -- (14,-6);
+    \draw[thick,->,>=latex] (12,-7.5) -- (12,-6); %flecha r(t)
+    \draw[thick,->,>=latex] (12,-4.5) -- (12,-6); %flecha Fk1(t)
+    \node at (11.4,-4.5) {$\mathbf{F_{k_{2}}(t)}$};
+    \node at (12,-7.5) {$\mathbf{N(t)=F_{k_{2}}(t)}$};
+
+\end{circuitikz}
+
+Solucion:
+\begin{enumerate}
+  \item Tenemos las siguientes ecuaciones:
+
+    \(\displaystyle F_{m_{1}}=m_{1}\frac{d^{2}y(t)}{dt^{2}}\) ; 
+    \(\displaystyle F_{m_{2}}=m_{2}\frac{d^{2}x(t)}{dt^{2}}\) ;\\
+    
+    \(\displaystyle F_{\beta}=\beta\left[\frac{dy(t)}{dt}-\frac{dz(t)}{dt}\right]\) visto desde $y(t)$;\\
+
+    \(\displaystyle F_{k_{1}}=k_{1}[y(t)-x(t)]\) visto desde $y(t)$; \vspace{5mm}
+    \(\displaystyle F_{k_{2}}=k_{2}x(t)\) visto desde $x(t)$;
+
+
+  \item Hacemos la sumatoria de las fuerzas (DCL):
+
+    Para el punto donde se encuentra la perturbaci\'on:
+    \begin{eqnarray*}
+      r(t)-F_{k_{1}}(t)-F_{m_{1}}(t)-F_{\beta}(t)=0\\ [3mm]
+      [y(t)-x(t)]k_{1} + m_{1}\frac{d^{2}y}{dt^{2}}+\beta \left[\frac{dy}{dt}-\frac{dx}{dt}\right]=r(t)
+    \end{eqnarray*}
+    Para la masa 2.
+    \begin{eqnarray*}
+      F_{k_{1}} - F_{m_{2}} - F_{k_{2}} + F_{\beta} = 0 \\ [3mm]
+      [y(t)-x(t)]k_{1} - m_{2}\frac{d^{2}x}{dt^{2}} - k_{2}x(t) + \beta\left[\frac{dy(t)}{dt}-\frac{dx(t)}{dt}\right] = 0 \hspace{5mm} (-1) \\[3mm]
+      m_{2}\frac{d^{2}x}{dt^{2}} + \beta\left[\frac{dx(t)}{dt}-\frac{dy(t)}{dt}\right] + k_{1}[x(t)-y(t)] + k_{2}x(t) = 0
+    \end{eqnarray*}
+
+  \item Aplicamos la transformada de Laplace: \(\displaystyle y'(0)=y(0)=x'(0)=x(0)=0\)
+
+    Para la primera ecuaci\'on:
+    \begin{eqnarray*}
+      [y(t)-x(t)]k_{1} + m_{1}\frac{d^{2}y}{dt^{2}}+\beta \left[\frac{dy}{dt}-\frac{dx}{dt}\right]=r(t)\\ [3mm]
+      \mathscr{L}\left\{[y(t)-x(t)]k_{1} + m_{1}\frac{d^{2}y}{dt^{2}}+\beta \left[\frac{dy}{dt}-\frac{dx}{dt}\right]\right\}=\mathscr{L}\{r(t)\}\\[3mm]
+      k_{1}[Y(s)-X(s)] + m_{1}S^{2}Y(s) + \beta S[Y(s)-X(s)]=R(s)\\ [3mm]
+    \end{eqnarray*}
+    Para la segunda ecuaci\'on:
+    \begin{eqnarray*}
+      m_{2}\frac{d^{2}x}{dt^{2}} + \beta\left[\frac{dx(t)}{dt}-\frac{dy(t)}{dt}\right] + k_{1}[x(t)-y(t)] + k_{2}x(t) = 0\\[3mm]
+      \mathscr{L}\left\{m_{2}\frac{d^{2}x}{dt^{2}} + \beta\left[\frac{dx(t)}{dt}-\frac{dy(t)}{dt}\right] + k_{1}[x(t)-y(t)] + k_{2}x(t)\right \} = 0\\[3mm]
+      m_{2}S^{2}X(s) + \beta S[X(s)-Y(s)] + k_{1}[X(s)-Y(s)] + k_{2}X(s) = 0
+    \end{eqnarray*}
+
+  \item Ordenamos las ecuaciones:
+    \begin{eqnarray}
+      \overbrace{-(k_{1} + \beta S)}^{a}X(s) + \overbrace{(k_{1} + \beta S + m_{1}S^{2})}^{b}Y(s) = R(s)\\[3mm]
+      \overbrace{(k_{1}+k_{2}+ \beta S + m_{2}S^{2})}^{c}X(s) - \overbrace{(k_{1} + \beta S)}^{d}Y(s) = 0
+    \end{eqnarray}
+
+  \item Resolvemos las ecuaciones por el metodo de cramer:
+    \begin{eqnarray*}
+      X(s)&=&\frac{
+      \begin{vmatrix}
+        R(s) & b\\
+        0 & -d
+      \end{vmatrix}}
+      {\begin{vmatrix}
+        -a & b\\
+        c & -d
+      \end{vmatrix}}
+      =\frac{-R(s)d-0b}{ad-cb}=\frac{-dR(s)}{ad-cb}\\[3mm]
+      X(s)&=&\frac{-(k_{1}+\beta S)R(s)}{(k_{1}+ \beta S)(k_{1}+ \beta S) - (k_{1}+k_{2} +\beta S + m_{2}S^{2})(k_{1} + \beta S + m_{1}S^{2})}
+    \end{eqnarray*}
+    \begin{eqnarray*}
+      \tcboxmath[colback=blue!25,colframe=black]
+      {FT_{1}(s)=\frac{X(s)}{R(s)}=\frac{-(k_{1}+\beta S)}{(k_{1}+ \beta S)(k_{1}+ \beta S) - (k_{1}+k_{2} +\beta S + m_{2}S^{2})(k_{1} + \beta S + m_{1}S^{2})}}
+    \end{eqnarray*}
+
+    \begin{eqnarray*}
+      Y(s)&=&\frac{
+      \begin{vmatrix}
+        -a & R(s)\\
+        c & 0
+      \end{vmatrix}}
+      {\begin{vmatrix}
+        -a & b\\
+        c & -d
+      \end{vmatrix}}
+      =\frac{-a0-cR(s)}{ad-cb}=\frac{-cR(s)}{ad-cb}\\
+      Y(s)&=&\frac{-(k_{1}+k_{2}+\beta S+m_{2}S^{2})R(s)}{(k_{1}+ \beta S)(k_{1}+ \beta S) - (k_{1}+k_{2} +\beta S + m_{2}S^{2})(k_{1} + \beta S + m_{1}S^{2})}\\
+    \end{eqnarray*}
+    \begin{eqnarray*}
+      \tcboxmath[colback=blue!25,colframe=black]
+      {FT_{2}(s)=\frac{Y(s)}{R(s)}=
+      \frac{-(k_{1}+k_{2}+\beta S+m_{2}S^{2})}{(k_{1}+ \beta S)(k_{1}+ \beta S) - (k_{1}+k_{2} +\beta S + m_{2}S^{2})(k_{1} + \beta S + m_{1}S^{2})}}\\
+    \end{eqnarray*}
+
+\end{enumerate}
+
+\newpage
+
+\section{Ejercicio \# 4}
+
+Hallar: \(\displaystyle \frac{V_{o}(s)}{V_{i}(s)} ; \frac{I(s)}{V_{i}(s)}\)
+
+\begin{figure}[h]
+%Diagrama de circuito RLC
+\begin{circuitikz}[american]
+
+    %\draw (0,0) to [sV=$v_{i}(t)$] ++(0,3);
+    \draw (0,3) to [L=$L$] (3,3);
+    \draw (3,3) to [C, l=$C$] (6,3);
+    \draw (6,3) to [short, -*] (7.5,3); %nodo positivo
+    \draw (6,3) to [R, l=$R$] (6,0);
+    \draw (6,0) to [short, -*] (7.5,0); %nodo negativo
+    \draw (7.5,3) to [open, v=$v_{0}(t)$] (7.5,0);
+    \draw (6,0) to [short] (0,0)
+          (0,0) to [sV, l=$v_{i}(t)$] (0,3);
+    %el camino de la corriente i(t)
+  \draw[red,thin, <-, >=latex] (3,0.7)node{$i(t)$}  ++(-60:0.5) arc (-80:150:1.2);
+
+\end{circuitikz}
+\end{figure}
+
+Aplicamos la ley de tensi\'on Kirchhoff(LTK):
+
+$$v_{i}(t) = v_{L}(t) + v_{C}(t) + v_{R}(t)$$
+
+Donde:
+\begin{eqnarray*}
+  v_{L}(t) &=& L\frac{\mathrm{d}i(t)}{\mathrm{d}t} \\ [3mm]
+  v_{C}(t) &=& \frac{1}{C}\int i_{C}(t) \mathrm{d}t \\ [3mm]
+  v_{R}(t) &=& Ri(t)
+\end{eqnarray*}
+
+Ecuación diferencial del circuito RLC:
+\begin{equation*}
+  v_{i}(t) = L\frac{\mathrm{d}i(t)}{\mathrm{d}t} + \frac{1}{C}\int i_{C}(t) \mathrm{d}t + Ri(t)
+\end{equation*}
+
+Aplicamos la transformada de Laplace:
+\begin{eqnarray*}
+  \mathscr{L}\{v_{i}(t)\} = \mathscr{L}\{v_{L}(t) + v_{C}(t) + v_{R}(t)\} \\  [3mm]
+  \mathscr{L}\{v_{i}(t)\} = \mathscr{L}\left \{L\frac{\mathrm{d}i(t)}{\mathrm{d}t} + \frac{1}{C}\int i_{C}(t) \mathrm{d}t +Ri(t)\right \} \\ [3mm]
+  V_{i}(s) = LSI(s) + \frac{1}{CS}I(s) + RI(s) \\ [3mm]
+  V_{i}(s) = I(s)\left (LS + \frac{1}{CS} + R \right) \\ [3mm]
+  V_{i}(s) = I(s)\left (\frac{S^{2}LC+1+SRC}{SC} \right) \\ [3mm]
+  I(s) = V_{i}(s)\left (\frac{SC}{S^{2}LC+1+SRC} \right) \\ [3mm]
+\end{eqnarray*}
+
+Aplicamos la Ley de tension de Kirchhoff:
+\begin{eqnarray*}
+  -v_{o}(t) + v_{R}(t) = 0 \\ [3mm]
+  v_{o}(t) = v_{R}(t) = Ri(t) \\ [3mm]
+  \mathscr{L}\{v_{o}(t)\} = \mathscr{L}\left \{Ri(t)\right \} \\ [3mm]
+  V_{o}(s) = RI(s) \\ [3mm]
+\end{eqnarray*}
+
+Luego reemplazamos:
+\begin{eqnarray*}
+  V_{o}(s) = R\left[ V_{i}(s)\left( \frac{SC}{S^{2}LC+1+SRC} \right) \right] \\ [3mm]
+  V_{o}(s) = V_{i}(s)\left( \frac{SRC}{S^{2}LC+1+SRC} \right) \\ [3mm]
+\end{eqnarray*}
+
+Solución:
+\begin{eqnarray*}
+  \tcboxmath[colback=blue!25,colframe=black] {\frac{I(s)}{V_{i}(s)} = \frac{SC}{S^{2}LC+1+SRC}}\\
+\tcboxmath[colback=blue!25,colframe=black] {\frac{V_{o}(s)}{V_{i}(s)} = \frac{SRC}{S^{2}LC+1+SRC}}
+\end{eqnarray*}
+
+\newpage
+
+\section{Ejercicio \# 5}
+
+Hallar: \(\displaystyle \frac{V_{o}(s)}{V_{i}(s)}\)
+
+\begin{figure}[h]
+%Diagrama de circuito RLC
+\begin{circuitikz}[american]
+
+    %\draw (0,0) to [sV=$v_{i}(t)$] ++(0,3);
+    \draw (0,3) to [C,v^>=$C$] (3,3)
+     (3,3) to [L, v^>=$L$] (3,0)
+     (3,3) to [short, -*] (7.5,3) %nodo positivo
+     (6,3) to [R, v^>=$R$] (6,0);
+    \draw (6,0) to [short, -*] (7.5,0); %nodo negativo
+    \draw (7.5,3) to [open, v=$v_{0}(t)$] (7.5,0); 
+    \draw (6,0) to [short] (0,0)
+          (0,0) to [sV, v^<=$v_{i}(t)$] (0,3);
+    %el camino de la corriente i1(t) y i2(t)
+  \draw[red,thin, <-, >=latex] (1.5,0.7)node{$i_1(t)$}  ++(-60:0.5) arc (-80:150:1);
+  \draw[red,thin, <-, >=latex] (4.5,0.7)node{$i_2(t)$}  ++(-60:0.5) arc (-80:150:1);
+
+\end{circuitikz}
+
+Aplicamos la ley de tensi\'on Kirchhoff(LTK):
+
+
+\end{figure}
+\begin{figure}
+\begin{circuitikz}[american, scale = 1.5]
+
+  \draw[thin, <-, >=latex] (1,1)node{$i_1$}  ++(-60:0.5) arc (-60:170:0.5);
+  \draw (0,0)
+  to[V=$V_{in}$] (0,2) % The voltage source
+  to[R, v^<=$R_1$] (2,2) % The resistor
+  to[C, v^<=$C_1$] (2,1) % Capacitor One
+  to[C, v^<=$C_2$] (2,0) %Capacitor Two
+  to[L, v^<=$L_1$] (0,0); %Inductor One
+
+\end{circuitikz}
+\end{figure}
+aAplicamos la ley de Kirchhoff de las mallas:
+
+\newpage
+
+\section{Ejercicio \# 6}
+
+Hallar: \(\displaystyle \frac{V_{o}(s)}{V_{i}(s)}\)
+
+\begin{figure}[h]
+%Diagrama de circuito RLC
+\begin{circuitikz}[american]
+
+    %\draw (0,0) to [sV=$v_{i}(t)$] ++(0,3);
+    \draw
+     (3,3) to [L, v^>=$L$, f>=$i_{L}$] (3,0)
+     (0,3) to [short, -*] (11,3) %nodo positivo
+     (6,3) to [C, v^>=$C$, f>=$i_{C}$] (6,0)
+     (9,3) to [R, v^>=$R$, f>=$i_{R}$] (9,0);
+    \draw (6,0) to [short, -*] (11,0); %nodo negativo
+    \draw (11,3) to [open, v=$v_{0}(t)$] (11,0); 
+    \draw (6,0) to [short] (0,0)
+          (0,0) to [I, v^<=$i(t)$] (0,3);
+    %el camino de la corriente i1(t) y i2(t)
+  %\draw[red,thin, <-, >=latex] (1.5,0.7)node{$i_1(t)$}  ++(-90:1) arc (0:90:1);
+  %\draw[red,thin, <-, >=latex] (4.5,0.7)node{$i_2(t)$}  ++(-60:0.5) arc (-80:150:1);
+
+\end{circuitikz}
+\end{figure}
+
+\newpage
+
+\section{Ejercicio \# 7}
+
+Hallar: \(\displaystyle \frac{V_{o}(s)}{V_{i}(s)} ; \frac{I(s)}{V_{i}(s)}\)
+
+\begin{figure}[h]
+%Diagrama de circuito RLC
+\begin{circuitikz}[american]
+
+    %\draw (0,0) to [sV=$v_{i}(t)$] ++(0,3);
+  \draw (0,3) to [R,v^>=$R_{1}$] (3,3)
+     (3,3) to [R, v^>=$R_{2}$] (6,3)
+     (3,3) to [C, v_>=$C_{1}$] (3,0)
+     (6,3) to [short, -*] (7.5,3) %nodo positivo
+     (6,3) to [C, v^>=$C_{2}$] (6,0)
+     (6,0) to [short, -*] (7.5,0) %nodo negativo
+     (7.8,3) to [open, v=$v_{0}(t)$] (7.8,0);
+    \draw (6,0) to [short] (0,0)
+          (0,0) to [sV, v^<=$v_{i}(t)$] (0,3);
+    %el camino de la corriente i(t)
+  \draw[red,thin, <-, >=latex] (1.1,0.8)node{$i_{1}(t)$}  ++(-60:0.5) arc (-80:150:0.7);
+  \draw[red,thin, <-, >=latex] (4.5,0.7)node{$i_{2}(t)$}  ++(-60:0.5) arc (-80:150:0.7);
+
+\end{circuitikz}
+\end{figure}
+
+\end{document}
