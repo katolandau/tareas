@@ -1,2 +1,2 @@
-# class notes on control systems 
+# control systems class notes
 electromechanical engineering
