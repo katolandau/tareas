@@ -3,5 +3,3 @@ electromechanical engineering
 
 ![double pendulum](doublependulum2.gif)
 
-
-![](doublependulum.gif)
